@@ -1,0 +1,29 @@
+error:
+  no-permission: "&cYou can''t permissions"
+information:
+  plugin-reloaded: "&aPlugin reloaded successfully!"
+help-messages:
+  console-message:
+    - "&dKitsLab &f- &bv${version}"
+    - "&r"
+    - "&aCommands:"
+    - "&r"
+    - "&7- &e/kitslab"
+    - "&7- &e/kitslab give"
+    - "&7- &e/kitslab reload"
+    - "&r"
+    - "&dKitsLab &f- &bv${version}"
+  player-message:
+    - "&dKitsLab &f- &bv${version}"
+    - "&r"
+    - "&aCommands:"
+    - "&r"
+    - "&7- &e/kitslab"
+    - "&7- &e/kitslab create"
+    - "&7- &e/kitslab delete"
+    - "&7- &e/kitslab give"
+    - "&7- &e/kitslab show"
+    - "&7- &e/kitslab edit"
+    - "&7- &e/kitslab reload"
+    - "&r"
+    - "&dKitsLab &f- &bv${version}"

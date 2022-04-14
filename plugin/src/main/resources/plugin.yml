@@ -1,0 +1,13 @@
+main: com.github.lablyteam.kitslab.KitsLab
+name: KitsLab
+author: 'Jonakls'
+version: '${version}'
+website: https://github.com/jonakls
+commands:
+  kitslab:
+    description: General command of KitsKLab plugin
+    aliases:
+      - kits
+      - kit
+      - klab
+      - kl

@@ -28,7 +28,7 @@ public class KitsLab extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // On disable plugin
+        getLogger().info("KitsLab disabled");
     }
 
     private void registerModules() {

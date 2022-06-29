@@ -95,7 +95,6 @@ public class YamlFile extends YamlConfiguration {
     }
 
     public void reload() {
-        File folder = this.plugin.getDataFolder();
         File file = new File(folder, this.fileName);
 
         try {

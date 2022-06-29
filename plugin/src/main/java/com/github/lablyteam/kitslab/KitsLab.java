@@ -2,7 +2,9 @@ package com.github.lablyteam.kitslab;
 
 import com.github.lablyteam.kitslab.commands.KitsLabCommand;
 import com.github.lablyteam.kitslab.configuration.YamlFile;
+import com.github.lablyteam.kitslab.managers.FilesManager;
 import com.github.lablyteam.kitslab.modules.BinderModule;
+import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
@@ -12,6 +14,9 @@ public class KitsLab extends JavaPlugin {
 
     @Inject
     private KitsLabCommand kitsLabCommand;
+
+    @Inject
+    private FilesManager filesManager;
 
     @Inject @Named("config")
     private YamlFile config;
@@ -24,16 +29,20 @@ public class KitsLab extends JavaPlugin {
         registerModules();
         registerCommands();
 
+        // Startup logic files
+        filesManager.start();
+
     }
 
     @Override
     public void onDisable() {
         getLogger().info("KitsLab disabled");
+
+        filesManager.stop();
     }
 
     private void registerModules() {
-        BinderModule binderModule = new BinderModule(this);
-        Injector injector = binderModule.createInjector();
+        Injector injector = Guice.createInjector(new BinderModule(this));
         injector.injectMembers(this);
     }
 
@@ -48,5 +57,9 @@ public class KitsLab extends JavaPlugin {
 
     public YamlFile getMessages() {
         return messages;
+    }
+
+    public FilesManager getFilesManager() {
+        return filesManager;
     }
 }

@@ -1,0 +1,51 @@
+kit:
+  name: initial
+  display-kit: '&aInitial kit'
+  permission-kit: "kit.initial"
+  enable-kit: true
+  price: 200
+  char-id: I
+  display-item: DIAMOND_SWORD
+  kit-countdown: 0
+  equipment:
+    head:
+      display-name: '&aInitial Helmet'
+      material-item: DIAMOND_HELMET
+      enchants-items:
+        - PROTECTION_ENVIRONMENTAL:2
+    chest-plate:
+      display-name: '&aInitial Chest plate'
+      material-item: DIAMOND_CHESTPLATE
+      enchants-items:
+        - PROTECTION_ENVIRONMENTAL:2
+    leggings:
+      display-name: '&aInitial Leggings'
+      material-item: DIAMOND_LEGGINGS
+      enchants-items:
+        - PROTECTION_ENVIRONMENTAL:2
+    boots:
+      display-name: '&aInitial Boots'
+      material-item: DIAMOND_BOOTS
+      enchants-items:
+        - PROTECTION_ENVIRONMENTAL:2
+        - PROTECTION_FALL:1
+  content:
+    '1':
+      display-name: '&aInitial Sword'
+      material-item: DIAMOND_SWORD
+      lore-item:
+        - "&r"
+        - "&b Initial food of server"
+        - "&c Damage: &6&lYES"
+      enchants-item:
+        - DAMAGE_ALL:2
+        - DAMAGE_ARTHROPODS:1
+        - FIRE_ASPECT:1
+    '2':
+      display-name: '&aInitial food'
+      material-item: BREAD
+      amount-item: 12
+      enchants-items:
+        - LUCK:2
+      commands:
+        - "say hello!"

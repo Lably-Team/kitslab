@@ -1,31 +1,37 @@
 package com.github.lablyteam.kitslab.configuration;
 
+import com.github.lablyteam.kitslab.KitsLab;
+import com.github.lablyteam.kitslab.utils.TextUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import static com.github.lablyteam.kitslab.utils.TextUtils.toLegacy;
+
 public class YamlFile extends YamlConfiguration {
 
+    private final KitsLab plugin;
     private final String fileName;
-    private final Plugin plugin;
     private final File folder;
 
-    public YamlFile(Plugin plugin, String fileName) {
+    public YamlFile(KitsLab plugin, String fileName) {
         this(plugin, fileName, ".yml");
     }
 
-    public YamlFile(Plugin plugin, String fileName, String fileExtension) {
+    public YamlFile(KitsLab plugin, String fileName, String fileExtension) {
         this(plugin, fileName, fileExtension, plugin.getDataFolder());
     }
 
-    public YamlFile(Plugin plugin, String fileName, String fileExtension, File folder) {
+    public YamlFile(KitsLab plugin, String fileName, String fileExtension, File folder) {
         this.folder = folder;
         this.plugin = plugin;
         this.fileName = fileName + (fileName.endsWith(fileExtension) ? "" : fileExtension);
@@ -49,6 +55,28 @@ public class YamlFile extends YamlConfiguration {
         return colorize ? ChatColor.translateAlternateColorCodes('&', result) : result;
     }
 
+    /**
+     * Returns a Material from a configuration file.
+     * @param path The path of the material
+     * @return The final material
+     */
+    public Material getMaterial(String path) {
+        return getMaterial(path, Material.BEDROCK);
+    }
+
+    /**
+     * Returns a Material from a configuration file.
+     * @param path The path of the material
+     * @param defaultValue The default value if the material is not found or is null
+     * @return The final material
+     */
+    public Material getMaterial(String path, Material defaultValue) {
+        if (Material.matchMaterial(super.getString(path)) == null) {
+            return defaultValue;
+        }
+        return Material.matchMaterial(getString(path));
+    }
+
     @Override
     public List<String> getStringList(String path) {
         List<String> result;
@@ -58,7 +86,7 @@ public class YamlFile extends YamlConfiguration {
             return result;
         }
         result = super.getStringList(path);
-        result.replaceAll(line -> ChatColor.translateAlternateColorCodes('&', line));
+        result.replaceAll(TextUtils::toLegacy);
         return result;
     }
 

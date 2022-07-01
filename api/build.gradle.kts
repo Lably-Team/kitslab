@@ -2,8 +2,6 @@ plugins {
     id("java")
 }
 
-group = "com.github.lablyteam"
-
 repositories {
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
@@ -13,6 +11,7 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
     compileOnly("net.md-5:bungeecord-chat:1.8-SNAPSHOT")
+    implementation("org.jetbrains:annotations:23.0.0")
 }
 
 tasks {

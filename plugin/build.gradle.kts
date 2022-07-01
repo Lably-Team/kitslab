@@ -16,6 +16,7 @@ dependencies {
     implementation("com.google.inject:guice:4.0")
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
     compileOnly("net.md-5:bungeecord-chat:1.8-SNAPSHOT")
+    compileOnly("org.jetbrains:annotations:23.0.0")
 }
 
 tasks {
@@ -29,6 +30,9 @@ tasks {
         archiveBaseName.set("KitsLab")
         destinationDirectory.set(file("$rootDir/bin/"))
         minimize()
+
+        relocate("com.google.inject.guice", "com.github.lablyteam.kitslab.libs.guice")
+        relocate("org.jetbrains.annotations", "com.github.lablyteam.kitslab.libs.annotations")
     }
 
     java {

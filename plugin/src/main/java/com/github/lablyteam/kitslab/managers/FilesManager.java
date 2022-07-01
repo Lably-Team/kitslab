@@ -62,6 +62,10 @@ public class FilesManager implements ManagerLoader {
         return filesMap.get(name);
     }
 
+    public String[] getKitsNames() {
+        return filesMap.keySet().toArray(new String[0]);
+    }
+
     @Override
     public void stop() {
         filesMap.forEach((key, value) -> value.save());

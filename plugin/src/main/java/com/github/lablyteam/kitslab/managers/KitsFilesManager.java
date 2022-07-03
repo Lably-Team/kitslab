@@ -3,59 +3,64 @@ package com.github.lablyteam.kitslab.managers;
 import com.github.lablyteam.kitslab.KitsLab;
 import com.github.lablyteam.kitslab.api.ManagerLoader;
 import com.github.lablyteam.kitslab.configuration.YamlFile;
-import org.bukkit.Bukkit;
 
 import javax.inject.Inject;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
+import java.util.logging.Level;
 
-public class FilesManager implements ManagerLoader {
+public class KitsFilesManager implements ManagerLoader {
 
     @Inject
     private KitsLab plugin;
 
-    private static final Logger LOGGER = Bukkit.getLogger();
-
     private File[] files;
+    private File kitsFolder;
     private final Map<String, YamlFile> filesMap = new HashMap<>();
 
     @Override
     public void start() {
+        kitsFolder = new File(plugin.getDataFolder(), "kits");
         scanFiles();
         loadFiles();
     }
 
     private void scanFiles() {
-        File kitsFolder = new File(plugin.getDataFolder(), "kits");
-
         if (!kitsFolder.exists()) {
             kitsFolder.mkdir();
-            LOGGER.warning("Kits folder not found, creating one");
+            plugin.getLogger().warning("Kits folder not found, creating one");
         }
 
         files = kitsFolder.listFiles();
     }
 
     private void loadFiles() {
-        File kitsFolder = new File(plugin.getDataFolder(), "kits");
         if (files == null) {
             scanFiles();
+            plugin.getLogger().log(Level.SEVERE, "No files found in kits folder");
+            return;
         }
 
         if (files.length == 0) {
-            LOGGER.warning("No kits found");
+            YamlFile defaultKit = new YamlFile(plugin, "initial", ".yml", kitsFolder);
+            filesMap.put("initial", defaultKit);
+            plugin.getLogger().warning("No kits found");
             return;
         }
 
         for (File file : files) {
             if (file.getName().endsWith(".yml")) {
                 YamlFile yamlFile = new YamlFile(plugin, file.getName(), ".yml", kitsFolder);
-                filesMap.put(yamlFile.getName(), yamlFile);
+                filesMap.put(yamlFile.getString("kit.name", "null"), yamlFile);
             }
         }
 
+    }
+
+    public void reloadFiles() {
+        filesMap.clear();
+        loadFiles();
     }
 
     public YamlFile getFile(String name) {

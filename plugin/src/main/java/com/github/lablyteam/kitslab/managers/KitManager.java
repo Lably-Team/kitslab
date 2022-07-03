@@ -26,9 +26,10 @@ public class KitManager implements ManagerLoader {
     }
 
     private void loadKits() {
-        FilesManager filesManager = plugin.getFilesManager();
+        KitsFilesManager filesManager = plugin.getKitsFilesManager();
 
         for(String kitId : filesManager.getKitsNames()) {
+            plugin.getLogger().info("Loading kit " + kitId);
             YamlFile kitFile = filesManager.getFile(kitId);
             mapKits.put(
                     kitId,
@@ -49,13 +50,19 @@ public class KitManager implements ManagerLoader {
     private List<ItemStack> getKitContent(YamlFile kitFile) {
         List<ItemStack> kitContent = new ArrayList<>();
 
+        // TODO: analyze , no jump more items in configuration section
         int contents = kitFile.getConfigurationSection(KIT_PATH + "content")
                 .getKeys(false).size();
 
         for (int i = 0; i < contents; i++) {
+
+            if (!kitFile.contains(KIT_PATH + "content." + i)) {
+                continue;
+            }
+
             kitContent.add(
                     ItemBuilder.of(kitFile.getMaterial(KIT_PATH + "content." + i + ".material-item"))
-                            .name(kitFile.getString(KIT_PATH + "content." + i + ".name-item"))
+                            .name(kitFile.getString(KIT_PATH + "content." + i + ".display-name"))
                             .lore(kitFile.getStringList(KIT_PATH + "content." + i + ".lore-item"))
                             .build()
             );
@@ -73,6 +80,11 @@ public class KitManager implements ManagerLoader {
 
 
         return kitEquipment;
+    }
+
+    public void reloadKits() {
+        mapKits.clear();
+        loadKits();
     }
 
     public List<String> getKitList() {

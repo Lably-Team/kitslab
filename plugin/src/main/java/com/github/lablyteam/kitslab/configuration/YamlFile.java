@@ -6,16 +6,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
-import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-
-import static com.github.lablyteam.kitslab.utils.TextUtils.toLegacy;
 
 public class YamlFile extends YamlConfiguration {
 
@@ -111,8 +107,7 @@ public class YamlFile extends YamlConfiguration {
     }
 
     public void save() {
-        File folder = this.plugin.getDataFolder();
-        File file = new File(folder, this.fileName);
+        File file = new File(this.folder, this.fileName);
 
         try {
             this.save(file);

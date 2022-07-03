@@ -22,7 +22,8 @@ dependencies {
 tasks {
     processResources {
         expand(
-            "version" to version
+            "version" to version,
+            "name" to project.name,
         )
     }
 

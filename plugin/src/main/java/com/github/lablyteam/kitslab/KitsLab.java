@@ -1,8 +1,10 @@
 package com.github.lablyteam.kitslab;
 
+import com.github.lablyteam.kitslab.api.ManagerLoader;
 import com.github.lablyteam.kitslab.commands.KitsLabCommand;
 import com.github.lablyteam.kitslab.configuration.YamlFile;
-import com.github.lablyteam.kitslab.managers.FilesManager;
+import com.github.lablyteam.kitslab.managers.KitsFilesManager;
+import com.github.lablyteam.kitslab.managers.KitManager;
 import com.github.lablyteam.kitslab.modules.BinderModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -16,7 +18,10 @@ public class KitsLab extends JavaPlugin {
     private KitsLabCommand kitsLabCommand;
 
     @Inject
-    private FilesManager filesManager;
+    private KitsFilesManager kitsFilesManager;
+
+    @Inject
+    private KitManager kitManager;
 
     @Inject @Named("config")
     private YamlFile config;
@@ -29,8 +34,10 @@ public class KitsLab extends JavaPlugin {
         registerModules();
         registerCommands();
 
-        // Startup logic files
-        filesManager.start();
+        initManagers(
+                kitsFilesManager,
+                kitManager
+        );
 
     }
 
@@ -38,7 +45,10 @@ public class KitsLab extends JavaPlugin {
     public void onDisable() {
         getLogger().info("KitsLab disabled");
 
-        filesManager.stop();
+        stopMangers(
+                kitsFilesManager,
+                kitManager
+        );
     }
 
     private void registerModules() {
@@ -50,6 +60,18 @@ public class KitsLab extends JavaPlugin {
         getCommand("kitslab").setExecutor(kitsLabCommand);
     }
 
+    private void initManagers(ManagerLoader... managerLoaders) {
+        for (ManagerLoader managerLoader : managerLoaders) {
+            managerLoader.start();
+        }
+    }
+
+    private void stopMangers(ManagerLoader... managerLoaders) {
+        for (ManagerLoader managerLoader : managerLoaders) {
+            managerLoader.stop();
+        }
+    }
+
     @Override
     public YamlFile getConfig() {
         return config;
@@ -59,7 +81,11 @@ public class KitsLab extends JavaPlugin {
         return messages;
     }
 
-    public FilesManager getFilesManager() {
-        return filesManager;
+    public KitsFilesManager getKitsFilesManager() {
+        return kitsFilesManager;
+    }
+
+    public KitManager getKitManager() {
+        return kitManager;
     }
 }
